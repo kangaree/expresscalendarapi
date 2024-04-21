@@ -38,8 +38,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// TODO: Postgres
-// require('dotenv').config()
-// console.log(process.env.DB_HOST);
-
 module.exports = app;
