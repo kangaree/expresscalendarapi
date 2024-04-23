@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= title
+  p The time is #{new Date()}
+  p Please log in to create calendars.
+  div
+    a(href='/login') Login
+  div
+    a(href='/signup') Signup

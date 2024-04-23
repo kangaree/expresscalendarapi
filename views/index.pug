@@ -1,5 +1,7 @@
 extends layout
 
 block content
-  h1= title
+  h1 Express Calendar API
   p The time is #{new Date()}
+  form(action="/logout", method="post")
+    button.logout(type="submit") Sign out

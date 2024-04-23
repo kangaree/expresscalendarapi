@@ -3,9 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require("passport");
+var session = require("express-session");
+var db = require("./db");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var authRouter = require("./routes/auth");
 
 var app = express();
 
@@ -18,8 +22,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  session({
+    store: new (require("connect-pg-simple")(session))({
+      pool: db,
+    }),
+    // Move this to db.js later
+    secret: process.env.PG_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.authenticate("session"));
 
 app.use('/', indexRouter);
+app.use('/', authRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

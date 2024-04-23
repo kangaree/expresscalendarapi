@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  section.prompt
+    h1 Sign up
+    hr
+    form(action="/signup", method="post")
+      section
+        label(for="username") Username
+        input#username(name="username", type="text", autocomplete="username", required)
+      section
+        label(for="new-password") Password
+        input#new-password(name="password", type="password", autocomplete="new-password", required)
+      button(type="submit") Sign up
+    p.help Already have an account? 
+      a(href="/login") Sign in
