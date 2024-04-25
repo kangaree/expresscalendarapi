@@ -13,6 +13,12 @@ var authRouter = require("./routes/auth");
 
 var app = express();
 
+// Allow CORS for local development
+if (process.env.NODE_ENV === "development") {
+  var cors = require("cors");
+  app.use(cors());
+}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
