@@ -9,6 +9,7 @@ var db = require("./db");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var calendarsRouter = require('./routes/calendars');
 var authRouter = require("./routes/auth");
 
 var app = express();
@@ -16,7 +17,12 @@ var app = express();
 // Allow CORS for local development
 if (process.env.NODE_ENV === "development") {
   var cors = require("cors");
-  app.use(cors());
+  app.use(
+    cors({
+      origin: "http://localhost:3001",
+      credentials: true, // Allow credentials (cookies) to be sent
+    })
+  );
 }
 
 // view engine setup
@@ -43,6 +49,7 @@ app.use(passport.authenticate("session"));
 
 app.use('/', indexRouter);
 app.use('/', authRouter);
+app.use("/", calendarsRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

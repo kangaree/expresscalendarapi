@@ -5,3 +5,15 @@ block content
   p The time is #{new Date()}
   form(action="/logout", method="post")
     button.logout(type="submit") Sign out
+  section.calendarapp
+    header.header
+      h1 calendars
+      form(action="/calendars", method="post")
+        input.new-todo(name="title", placeholder="Add a calendar", autofocus)
+
+      if calendars && calendars.length > 0
+        ul
+          each calendar in calendars
+            li= calendar.title
+      else
+        p No calendars available

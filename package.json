@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build": "cd client && npm run build && cd .. && cp -R client/build/ public/app/ && mv public/app/index.html public/app/app.html && mv public/app/static public/static",
+    "build": "cd client && npm run build && cd .. && cp -R client/build/ public/app/ && mv public/app/index.html public/app/app.html && rsync -av --remove-source-files public/app/static/ public/static/",
     "dev": "concurrently \"NODE_ENV=development PORT=3000 nodemon\" \" cd client && PORT=3001 npm run start\""
   },
   "dependencies": {

@@ -4,32 +4,67 @@ const DEV_URL =
   process.env.NODE_ENV === "development" ? "http://localhost:3000" : "";
 
 function App() {
-  const [users, setUsers] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [calendars, setCalendars] = useState([]);
 
   useEffect(() => {
-    // Call self-hosted API to get users response
-    async function fetchUsers() {
+    const getUser = async () => {
       try {
-        const res = await fetch(`${DEV_URL}/users`);
-        const usersData = await res.json();
-        setUsers(usersData);
+        // Make this a helper function. This is for local dev, though.
+        const authResponse = await fetch(`${DEV_URL}/auth/status`, {
+          credentials: "include",
+        });
+
+        if (authResponse.ok) {
+          const authData = await authResponse.json();
+          setIsLoggedIn(authData.isAuthenticated);
+
+          if (authData.isAuthenticated) {
+            const calendarsResponse = await fetch(`${DEV_URL}/calendars`, {
+              credentials: "include",
+            });
+            const calendars = await calendarsResponse.json();
+            setCalendars(calendars);
+          }
+        } else {
+          console.error(
+            "Error checking authentication status:",
+            authResponse.status
+          );
+        }
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error("Error checking authentication status:", error);
       }
-    }
-    fetchUsers();
+    };
+
+    getUser();
   }, []);
 
   return (
     <div className="App">
-      <h1>Users</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            {user.id} - {user.username}
-          </li>
-        ))}
-      </ul>
+      <h1>Express Calendar API</h1>
+      <div>
+        {isLoggedIn ? (
+          <div>
+            User is logged in.{" "}
+            <form action={`${DEV_URL}/logout`} method="post">
+              <button className="logout" type="submit">
+                Sign out
+              </button>
+            </form>
+            <form action={`${DEV_URL}/calendars`} method="post">
+              <input name="title" placeholder="Add a calendar" autoFocus />
+            </form>
+            <ul>
+              {calendars.map((calendar, index) => (
+                <li key={index}>{calendar.title}</li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <a href="/login">Login</a>
+        )}
+      </div>
     </div>
   );
 }

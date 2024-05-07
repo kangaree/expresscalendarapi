@@ -108,4 +108,10 @@ router.post("/signup", async function (req, res, next) {
   });
 });
 
+// Authentication status endpoint
+router.get('/auth/status', (req, res) => {
+  // Should this just be user instead of a boolean and user?
+  res.json({ isAuthenticated: req.isAuthenticated(), user: req.user });
+});
+
 module.exports = router;

@@ -1,4 +1,9 @@
--- Use sequentially!
+DROP TABLE IF EXISTS federated_credentials,
+calendars,
+"session",
+users,
+users_calendars;
+
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE,
@@ -21,8 +26,15 @@ CREATE TABLE IF NOT EXISTS federated_credentials (
 
 CREATE TABLE IF NOT EXISTS calendars (
     id SERIAL PRIMARY KEY,
-    owner_id INTEGER NOT NULL REFERENCES users(id),
-    title TEXT NOT NULL
+    title TEXT,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS users_calendars (
+    user_id INTEGER REFERENCES users(id),
+    calendar_id INTEGER REFERENCES calendars(id),
+    PRIMARY KEY (user_id, calendar_id)
 );
 
 -- connect-pg-simple
@@ -32,7 +44,6 @@ CREATE TABLE IF NOT EXISTS "session" (
     "expire" timestamp(6) NOT NULL
 ) WITH (OIDS = FALSE);
 
--- I missed this query initially. It caused a lot of headaches!
 ALTER TABLE
     "session"
 ADD
