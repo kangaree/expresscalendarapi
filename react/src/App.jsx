@@ -41,12 +41,11 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="card">
       <h1>Express Calendar API</h1>
       <div>
         {isLoggedIn ? (
           <div>
-            User is logged in.{" "}
             <form action={`${DEV_URL}/logout`} method="post">
               <button className="logout" type="submit">
                 Sign out
