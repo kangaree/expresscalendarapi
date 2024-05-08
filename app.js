@@ -8,7 +8,6 @@ var session = require("express-session");
 var db = require("./db");
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var calendarsRouter = require('./routes/calendars');
 var authRouter = require("./routes/auth");
 
@@ -47,10 +46,9 @@ app.use(
 );
 app.use(passport.authenticate("session"));
 
-app.use('/', indexRouter);
 app.use('/', authRouter);
 app.use("/", calendarsRouter);
-app.use('/users', usersRouter);
+app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

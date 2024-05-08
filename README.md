@@ -4,8 +4,3 @@
 Express Calendar API is based on the [Google Calendar API](https://developers.google.com/calendar/api/guides/overview).
 
 ![Google Calendar API.](https://developers.google.com/static/calendar/api/images/calendars-events.png)
-
-TODOs:
-- Start with Users and Authentication
-- Set up React frontend
-- Move from Render (similar to Heroku) to VPS (e.g., DigitalOcean) or Docker
